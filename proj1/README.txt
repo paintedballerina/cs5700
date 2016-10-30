@@ -18,4 +18,4 @@ SOLUTION --> send solution [repeat riddle/solution]
 BYE --> secret code | connection terminated
 
 COGNITIVE DISSONANCE:
-- Use of argh vs argparse for determining variables in command line
+- Use of argv vs argparse for determining variables in command line
