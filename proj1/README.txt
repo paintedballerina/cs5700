@@ -16,3 +16,6 @@ HELLO --> connection made | send NUID
 STATUS --> sphynx riddle
 SOLUTION --> send solution [repeat riddle/solution]
 BYE --> secret code | connection terminated
+
+COGNITIVE DISSONANCE:
+- Use of argh vs argparse for determining variables in command line
