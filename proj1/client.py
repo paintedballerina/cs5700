@@ -2,41 +2,71 @@
 # CS 5700 - Fall 2016
 # Project 1
 # Sockets and Sprockets
+# Valid for Python 2.7.12 | another built for 3.5
 
 # import libraries
 import socket
 import argparse
-import sys
 import ssl
 
 
 # customs declaration
-host = 'cs5700f16.ccs.neu.edu'
-port = 27993
-
-crn = 'cs5700fall2016'
-nuid = '000547574'
+host = ""
+port = ""
+secure = ""
+crn = "cs5700fall2016"
+nuid = ""
 
 
 # math function for later
-# error handling: should have "else: math problem"
 def mathy(a, b, m):
-    if m == '+':
+    if m == "+":
         c = a + b
-    elif m == '-':
+    elif m == "-":
         c = a - b
-    elif m == '*':
+    elif m == "*":
         c = a * b
-    else:
+    elif m == "/":
         c = a // b
+    else:
+        c = "error in your math"
     return c
+
+#Parser for command line input
+parser = argparse.ArgumentParser(description="this is an example")
+parser.add_argument("-p", dest="port", help="port to connect on server", default=27993)
+parser.add_argument("-s", dest="secure", action="store_true", help="set ssl flag", default=False)
+parser.add_argument("host")
+parser.add_argument("nuid")
+
+args = parser.parse_args()
+
+print(args.port)
+print(args.secure)
 
 
 # HELLO -- create connection | check SSL | send init data
-s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-s.connect((host, port))
-s.send( crn + ' HELLO ' + nuid + '\n')
+hello = "%s %s %s\n" % (crn, "HELLO", args.nuid)
 
+s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+if args.secure and args.port == 27993:
+    args.port = 27994
+    secureSocket = ssl.wrap_socket(s)
+
+    try:
+        secureSocket.connect((args.host, args.port))
+        secureSocket.send(hello.encode('utf-8'))
+
+    except socket.error as err:
+        print("Connection fail!  Error %s" % (err))
+
+else:
+    try:
+        s.connect((args.host, args.port))
+        s.send(hello.encode('utf-8'))
+
+    except socket.error as err:
+        print("Connection nope!  Error %s" % err)
 
 # STATUS + SOLUTION -- these dance with each other until Sphinx happy
 # Read message for "BYE"
@@ -52,7 +82,6 @@ while quest:
 
     # parse the sphynx's riddle
     sphynx = msg.split()
-
     # what is your quest?
     if sphynx[2] == "BYE":
         quest = False
@@ -66,8 +95,8 @@ while quest:
         b = int(sphynx[4])
         m = sphynx[3]
         result = mathy(a, b, m)
-        solution = "%s %d\n" % (crn, result)
-        s.send(solution)
+        solution = "%s %s\n" % (crn, result)
+        s.send(solution.encode('utf-8'))
 
 # BYE -- close the connection
 print(secret)

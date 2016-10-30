@@ -18,4 +18,5 @@ SOLUTION --> send solution [repeat riddle/solution]
 BYE --> secret code | connection terminated
 
 COGNITIVE DISSONANCE:
-- Use of argv vs argparse for determining variables in command line
+- Version management for Python —> 2 vs 3 have major differences in layout and usage.
+- Final version is built for 2.7.15
