@@ -32,9 +32,9 @@ def mathy(a, b, m):
         c = "error in your math"
     return c
 
-#Parser for command line input
+# Parser for command line input
 parser = argparse.ArgumentParser(description="this is an example")
-parser.add_argument("-p", dest="port", help="port to connect on server", default=27993)
+parser.add_argument("-p" , dest="port", action="store", help="port to connect on server", default=27993, type=int)
 parser.add_argument("-s", dest="secure", action="store_true", help="set ssl flag", default=False)
 parser.add_argument("host")
 parser.add_argument("nuid")
